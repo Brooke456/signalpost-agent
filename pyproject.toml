@@ -1,6 +1,6 @@
 [project]
 name = "signalpost-agent"
-version = "1.0.0"
+version = "2.0.0"
 description = "Signalpost company-research agent: exact-entity, evidence-first Norwegian company profiles"
 requires-python = ">=3.12"
 license = {text = "MIT"}

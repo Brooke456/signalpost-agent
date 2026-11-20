@@ -130,17 +130,28 @@ def audit_company(env: dict) -> list[dict]:
                 u = get(f"https://data.brreg.no/enhetsregisteret/api/underenheter/{v['organisation_number']}")
                 verdict = "correct" if u.get("overordnetEnhet") == org and u.get("navn") == v.get("name") else "wrong"
             elif f == "official_website":
-                html = page(v)
                 spaced = f"{org[:3]} {org[3:6]} {org[6:]}"
                 reg = (ent.get("hjemmeside") or "").lower().replace("www.", "")
                 em = (ent.get("epostadresse") or "").lower().split("@")[-1]
+                tel = digits(ent.get("telefon") or ent.get("mobil"))[-8:]
                 host = re.sub(r"^https?://(www\.)?", "", v).split("/")[0]
-                if org in digits(html) and (org in html or spaced in html or org in html.replace("\u00a0", " ").replace(" ", "")):
-                    verdict, why = "correct", "org number on site"
+                ev = {e["id"]: e for e in env["evidence"]}
+                urls = [v] + [ev[i]["source_url"] for i in c["evidence_ids"] if ev[i]["source_class"] == "company_owned_website"]
+
+                def has_org(h: str) -> bool:
+                    flat = h.replace("\u00a0", " ")
+                    return org in flat or spaced in flat or f"{org[:3]}.{org[3:6]}.{org[6:]}" in flat or org in flat.replace(" ", "")
+                hit = next((u for u in dict.fromkeys(urls) if has_org(page(u))), None)
+                if hit:
+                    verdict, why = "correct", f"org number re-found on {hit}"
                 elif reg and host.endswith(reg.split("/")[0]):
                     verdict, why = "correct", "matches registry-declared website"
+                elif any(x["source_class"] == "official_subunits_api" for x in (ev[i] for i in c["evidence_ids"])):
+                    verdict, why = "needs_review", "declared on a registered sub-unit"
                 elif em and host.endswith(em):
                     verdict, why = "needs_review", "registry e-mail domain (name match)"
+                elif tel and any(tel in digits(page(u)) for u in dict.fromkeys(urls)):
+                    verdict, why = "needs_review", "registry phone re-found on site (check legal name)"
                 else:
                     verdict, why = "needs_review", "no org number in raw HTML"
             elif f == "social_profile":
@@ -176,10 +187,16 @@ def main() -> None:
     ap.add_argument("--envelopes", required=True)
     ap.add_argument("--sample", type=int, default=30)
     ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--web-only-all", action="store_true", help="audit only website/social claims, for every company that has one")
     ap.add_argument("--output", required=True)
     a = ap.parse_args()
     envs = [json.loads(l) for l in Path(a.envelopes).read_text(encoding="utf-8").splitlines() if l.strip()]
-    sample = random.Random(a.seed).sample(envs, min(a.sample, len(envs)))
+    if a.web_only_all:
+        sample = [e for e in envs if any(c["field"] == "official_website" and c.get("availability") == "available" for c in e["claims"])]
+        for e in sample:
+            e["claims"] = [c for c in e["claims"] if c["field"] in ("official_website", "social_profile")]
+    else:
+        sample = random.Random(a.seed).sample(envs, min(a.sample, len(envs)))
     rows = []
     for e in sample:
         rows += audit_company(e)

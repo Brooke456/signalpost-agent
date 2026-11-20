@@ -365,11 +365,15 @@ def collect_subunits(col: Collector, org: str) -> list[dict[str, Any]]:
         if u.get("harRegistrertAntallAnsatte") and u.get("antallAnsatte") is not None:
             rec["registered_employees"] = u.get("antallAnsatte")
         out.append(rec)
+        # contact details the company declared for this sub-unit (used only as website candidates, not published as claims)
+        rec_private = {"website": u.get("hjemmeside"), "email": u.get("epostadresse"), "span_url": url, "sha256": resp.sha256,
+                       "retrieved_at": resp.retrieved_at}
         e = col.ev(url=url, source_class="official_subunits_api", retrieved_at=resp.retrieved_at, sha256=resp.sha256,
                    span=f"underenhet {rec['organisation_number']} {rec['name']}: {a}", method="brreg_subunits_json",
                    http_status=resp.status, rights=NLOD)
-        col.claim("workplaces", "registered_workplace", rec, [e], key=rec["organisation_number"],
+        col.claim("workplaces", "registered_workplace", dict(rec), [e], key=rec["organisation_number"],
                   effective_date=rec.get("started"))
+        rec["_declared"] = rec_private
     if out:
         col.section("workplaces", "available", sources=[url])
         if total and total > len(rows):

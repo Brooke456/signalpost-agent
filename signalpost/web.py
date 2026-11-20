@@ -168,7 +168,13 @@ def parse_page(resp: Response) -> Page:
     if "html" not in ctype and not resp.body.lstrip()[:200].lower().startswith((b"<!doctype", b"<html", b"<?xml", b"<head")):
         return page
     html = resp.text()
-    soup = BeautifulSoup(html, "lxml")
+    try:
+        soup = BeautifulSoup(html, "lxml")
+    except Exception:  # noqa: BLE001  (malformed namespaced markup can crash the lxml tree builder)
+        try:
+            soup = BeautifulSoup(html, "html.parser")
+        except Exception:  # noqa: BLE001
+            return page
     page.soup = soup
     if soup.title and soup.title.string:
         page.title = re.sub(r"\s+", " ", soup.title.string).strip()[:200]
@@ -268,6 +274,7 @@ class SiteResult:
     name_match: bool = False
     phone_match: bool = False
     address_match: bool = False
+    email_match: bool = False
     parked: bool = False
     verdict: str = "not_checked"  # verified | accepted_registry | ambiguous | rejected | unreachable
     confidence: float = 0.0
@@ -324,14 +331,19 @@ def priority_links(page: Page, domain: str, limit: int = 6) -> list[str]:
             scored[clean] = max(scored.get(clean, 0), best)
     ranked = sorted(scored.items(), key=lambda kv: (-kv[1], len(kv[0])))
     out: list[str] = []
-    seen_cat: dict[int, int] = {}
-    for u, sc in ranked:
-        if seen_cat.get(sc, 0) >= 2:
-            continue
-        seen_cat[sc] = seen_cat.get(sc, 0) + 1
-        out.append(u)
-        if len(out) >= limit:
-            break
+    # first one page per category (contact, about, terms/privacy, careers, news, ...), then a second of each
+    for rnd in (1, 2):
+        seen_cat: dict[int, int] = {}
+        for u, sc in ranked:
+            if u in out:
+                continue
+            if seen_cat.get(sc, 0) >= 1:
+                continue
+            if rnd == 2 or not any(sc == s2 for s2 in seen_cat):
+                seen_cat[sc] = seen_cat.get(sc, 0) + 1
+                out.append(u)
+            if len(out) >= limit:
+                return out
     return out
 
 
@@ -354,6 +366,9 @@ def check_site(candidate: str, origin: str, ident: dict[str, Any], *, max_pages:
     street = fold((ba.get("adresse") or [""])[0]).strip() if isinstance(ba, dict) else ""
     street = street if len(street) >= 6 and re.search(r"\d", street) else ""
     pnr = (ba.get("postnummer") or "") if isinstance(ba, dict) else ""
+    reg_email = (ident.get("email") or "").strip().lower()
+    if "@" not in reg_email or reg_email.rsplit("@", 1)[1] in FREE_MAIL:
+        reg_email = ""
 
     def scan(pg: Page) -> None:
         if not res.org_found:
@@ -376,6 +391,8 @@ def check_site(candidate: str, origin: str, ident: dict[str, Any], *, max_pages:
                 res.phone_match = True
         if not res.name_match:
             res.name_match = _name_match(ident, pg, res.domain)
+        if not res.email_match and reg_email and reg_email.endswith("@" + res.domain) and (reg_email in pg.mail or reg_email in pg.text.lower()):
+            res.email_match = True
         if not res.address_match and street and pnr:
             t = fold(pg.text)
             if pnr in t and street in re.sub(r"\s+", " ", t):
@@ -408,6 +425,16 @@ def label_matches_name(ident: dict[str, Any], domain: str) -> bool:
     return label == compact or (len(label) >= 5 and (label in compact and len(label) >= 0.6 * len(compact)))
 
 
+LANG_PATH = re.compile(r"^/((no|nb|nn|en|se|sv|da|de)([-_][a-z]{2})?/?)*((index|home|forside|no|en)(\.html?|\.php)?)?/?$", re.I)
+
+
+def is_section_of_shared_site(url: str, domain: str, ident: dict[str, Any]) -> bool:
+    path = urllib.parse.urlsplit(url).path or "/"
+    if LANG_PATH.match(path):
+        return False
+    return not label_matches_name(ident, domain)
+
+
 def _decide(res: SiteResult, ident: dict[str, Any]) -> None:
     o = res.origin
     shared = getattr(res, "shared", 0)
@@ -417,13 +444,23 @@ def _decide(res: SiteResult, ident: dict[str, Any]) -> None:
     if res.parked and not res.org_found:
         res.verdict, res.reason = "rejected", "parked or placeholder page"
         return
+    label_ok = label_matches_name(ident, res.domain)
     if res.org_found:
+        if o == "name_guess" and len(res.other_orgs) >= 3 and not (res.name_match or label_ok):
+            res.verdict = "rejected"
+            res.reason = f"page lists {len(res.other_orgs) + 1} organisation numbers (directory or group listing), not a company-owned site"
+            return
         res.verdict, res.confidence = "verified", 0.99
         res.reason = "organisation number printed on the site"
+        home = res.pages[0] if res.pages else None
+        on_home = bool(res.org_evidence and home and res.org_evidence[0] in (home.final_url, home.url))
+        if not on_home and not (res.name_match or label_ok) and not (home and _name_match(ident, home, res.domain)):
+            # e.g. a store page on a chain / franchise domain: publish only that page, not the domain's own profiles
+            res.chain_page = True  # type: ignore[attr-defined]
+            res.reason = "organisation number printed on a company page of a shared chain/franchise site"
         return
-    label_ok = label_matches_name(ident, res.domain)
     contradict = bool(res.other_orgs) and not res.name_match and not label_ok
-    if o in ("registry_declared", "nav_employer_homepage"):
+    if o in ("registry_declared", "registry_subunit_declared", "nav_employer_homepage"):
         if contradict:
             res.verdict, res.reason = "ambiguous", f"site shows other organisation number(s) {sorted(res.other_orgs)[:3]} and not this company's"
             return
@@ -454,45 +491,85 @@ def _decide(res: SiteResult, ident: dict[str, Any]) -> None:
         res.verdict, res.reason = "ambiguous", "registry e-mail domain but the site does not name this company (could be an employer/accountant/parent domain)"
         return
     # third-party or guessed candidates need hard corroboration
-    if (res.phone_match or res.address_match) and res.name_match and not res.other_orgs:
+    if (res.phone_match or res.address_match or res.email_match) and res.name_match and not res.other_orgs:
         res.verdict, res.confidence = "verified", 0.95
-        res.reason = "company name and registry " + ("phone number" if res.phone_match else "business address") + " both found on site"
+        res.reason = "company name and registry " + ("phone number" if res.phone_match else "business address" if res.address_match else "e-mail address") + " both found on site"
         return
     res.verdict, res.reason = "rejected", "no organisation number (or legal name + registry phone) on site"
 
 
 # ---------------------------------------------------------------- candidates
-def guess_domains(ident: dict[str, Any], limit: int = 4) -> list[str]:
-    core = core_name(ident.get("name") or "")
-    toks = core.replace("&", " og ").split()
-    if not toks:
-        return []
-    generic = {"holding", "invest", "investment", "eiendom", "eiendommer", "consult", "consulting", "service", "services",
-               "og", "and", "i", "norge", "norway", "group", "gruppen", "drift", "utvikling", "capital", "kapital", "management",
-               "as", "partners", "partner", "prosjekt", "ii", "iii", "iv", "1", "2", "3"}
-    if all(t in generic or len(t) <= 1 for t in toks):
-        return []
-    if len(toks) > 4:
-        return []
-    cands: list[str] = []
-    compact = "".join(toks)
-    hyph = "-".join(toks)
-    strip_generic = [t for t in toks if t not in generic]
-    variants = [compact, hyph]
-    if strip_generic and strip_generic != toks:
-        variants += ["".join(strip_generic), "-".join(strip_generic)]
-    seen = set()
-    for v in variants:
-        if not v or len(v) < 4 or v in seen or len(v) > 40:
+GENERIC_WORDS = {"holding", "holdings", "invest", "investment", "investering", "eiendom", "eiendommer", "consult", "consulting",
+                 "service", "services", "og", "and", "i", "norge", "norway", "norsk", "norske", "group", "gruppen", "drift",
+                 "utvikling", "capital", "kapital", "management", "as", "asa", "partners", "partner", "prosjekt", "ii", "iii",
+                 "iv", "1", "2", "3", "the", "nordic", "nord", "sor", "vest", "ost", "avd", "avdeling", "co", "company",
+                 "selskap", "selskapet", "firma", "handel", "bygg", "transport", "regnskap", "tjenester", "media", "data",
+                 "it", "film", "design", "eiendomsselskap", "naering", "naeringseiendom", "byggservice", "maskin"}
+
+
+COMPOUND_SUFFIXES = ("produkter", "produksjon", "service", "senteret", "senter", "sentral", "entreprenor", "entrepenor", "transport",
+                     "utleie", "handel", "tjenester", "teknikk", "verksted", "forretning", "industri", "byggservice")
+
+
+def _alt_fold(text: str) -> list[str]:
+    """Two Norwegian transliterations: ø→o/æ→ae/å→a (the usual one) and ø→oe/å→aa."""
+    a = norm_name(text)
+    low = (text or "").lower().replace("ø", "oe").replace("å", "aa").replace("æ", "ae")
+    b = norm_name(low)
+    return [a] if a == b else [a, b]
+
+
+def domain_labels(name: str) -> list[str]:
+    """Candidate domain labels for a company / brand name, most specific first."""
+    from .registry import LEGAL_SUFFIX
+    out: list[str] = []
+    for folded in _alt_fold(LEGAL_SUFFIX.sub(" ", name or "")):
+        toks = [t for t in folded.replace("&", " ").split() if t not in ("og", "and")]
+        toks = [t for t in toks if t not in ("as", "asa", "avd", "avdeling")]
+        if not toks or len(toks) > 6:
             continue
-        seen.add(v)
-        cands += [f"{v}.no", f"{v}.com"]
-    out = []
-    for d in cands:
-        if resolve(d) or resolve("www." + d):
-            out.append("https://" + d + "/")
-        if len(out) >= limit:
-            break
+        if all(t in GENERIC_WORDS or len(t) <= 2 for t in toks):
+            continue
+        core = [t for t in toks if t not in GENERIC_WORDS]
+        variants = ["".join(toks), "-".join(toks)]
+        if core and core != toks:
+            variants += ["".join(core), "-".join(core)]
+        if len(toks) >= 3:
+            variants += ["".join(toks[:2]), "-".join(toks[:2])]
+        last = toks[-1]
+        for suf in COMPOUND_SUFFIXES:
+            if last.endswith(suf) and len(last) - len(suf) >= 4:
+                stem = toks[:-1] + [last[: -len(suf)]]
+                variants += ["".join(stem), "-".join(stem)]
+                if stem[-1].endswith("s") and len(stem[-1]) >= 6:
+                    stem2 = stem[:-1] + [stem[-1][:-1]]
+                    variants += ["".join(stem2)]
+                break
+        if len(toks) >= 2 and len(toks[0]) >= 5 and toks[0] not in GENERIC_WORDS and not toks[0].isdigit():
+            variants.append(toks[0])
+        for v in variants:
+            if 4 <= len(v) <= 40 and v not in out and not v.isdigit():
+                out.append(v)
+    return out
+
+
+def guess_domains(ident: dict[str, Any], limit: int = 4, extra_names: list[str] | None = None) -> list[str]:
+    """Resolve candidate .no/.com domains built from the legal name and the company's own registered names
+    (distinct sub-unit names, earlier legal names). Candidates are only hypotheses: each one must print the
+    organisation number, or the legal name together with the registry phone, address or e-mail, before it is published."""
+    labels: list[str] = []
+    for n in [ident.get("name") or ""] + list(extra_names or []):
+        for l in domain_labels(n):
+            if l not in labels:
+                labels.append(l)
+    out: list[str] = []
+    for l in labels[:12]:
+        for tld in (".no", ".com"):
+            d = l + tld
+            if resolve(d) or resolve("www." + d):
+                out.append("https://" + d + "/")
+            if len(out) >= limit:
+                return out
     return out
 
 

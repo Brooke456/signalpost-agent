@@ -43,6 +43,11 @@ class NavFeedIndex:
     def __init__(self) -> None:
         self.by_name: dict[str, list[dict[str, Any]]] = {}
         self.by_first: dict[str, set[str]] = {}
+        self.by_org: dict[str, list[dict[str, Any]]] = {}  # employer org number -> parsed active feed entries
+        self.entries_fetched = 0
+        self.entries_cached = 0
+        self.entries_total = 0
+        self.org_index_complete = False
         self.pages = 0
         self.active = 0
         self.error: str | None = None
@@ -66,6 +71,66 @@ class NavFeedIndex:
                 for it in self.by_name.get(k, []):
                     out.setdefault(it["uuid"], it)
         return list(out.values())
+
+
+def _index_entries_by_org(idx: "NavFeedIndex", active: list[dict[str, Any]], token: str, cache: "Path | None",
+                          deadline: float | None, workers: int = 16) -> None:
+    """Read the feed entry of every ACTIVE ad once per run (the documented way to consume the NAV feed) and index it by
+    the employer organisation number printed in the ad. Entries are cached on disk by uuid + sistEndret, so refresh runs
+    only re-read ads that changed. Matching is then exact on org number (main unit or any registered sub-unit)."""
+    import json as _json
+    import time as _time
+    from concurrent.futures import ThreadPoolExecutor
+
+    idx.entries_total = len(active)
+    cache_file = (cache / "entries.json") if cache else None
+    old: dict[str, Any] = {}
+    if cache_file and cache_file.exists():
+        try:
+            old = _json.loads(cache_file.read_text())
+        except Exception:  # noqa: BLE001
+            old = {}
+    parsed: dict[str, dict[str, Any]] = {}
+    todo = []
+    for it in active:
+        c = old.get(it["uuid"])
+        if c and c.get("modified") == it.get("modified") and c.get("entry"):
+            parsed[it["uuid"]] = c["entry"]
+            idx.entries_cached += 1
+        else:
+            todo.append(it)
+
+    def one(it: dict[str, Any]) -> tuple[str, dict[str, Any] | None]:
+        if deadline and _time.monotonic() > deadline:
+            return it["uuid"], None
+        eurl = NAV_ENTRY.format(uuid=it["uuid"])
+        er, ebody = fetch_json(eurl, headers={"Authorization": "Bearer " + token}, timeout=20, attempts=2)
+        if not er.ok or not isinstance(ebody, dict):
+            return it["uuid"], None
+        return it["uuid"], _parse_entry(ebody, eurl, er)
+
+    complete = True
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        for u, e in ex.map(one, todo):
+            if e is None:
+                complete = False
+                continue
+            parsed[u] = e
+            idx.entries_fetched += 1
+    by_uuid = {it["uuid"]: it for it in active}
+    for u, e in parsed.items():
+        if e.get("status") not in (None, "ACTIVE") or not e.get("orgnr"):
+            continue
+        idx.by_org.setdefault(e["orgnr"], []).append({**e, "uuid": u, "feed_business_name": (by_uuid.get(u) or {}).get("business_name")})
+    idx.org_index_complete = complete
+    if cache_file:
+        try:
+            keep = {u: {"modified": by_uuid[u].get("modified"), "entry": e} for u, e in parsed.items() if u in by_uuid}
+            tmp = cache_file.with_suffix(".tmp")
+            tmp.write_text(_json.dumps(keep, ensure_ascii=False))
+            tmp.replace(cache_file)
+        except Exception:  # noqa: BLE001
+            pass
 
 
 def build_nav_index(cache_dir: "Path | None", days: int = 150, deadline: float | None = None) -> NavFeedIndex:
@@ -129,6 +194,8 @@ def build_nav_index(cache_dir: "Path | None", days: int = 150, deadline: float |
         url = body.get("next_url")
         if not body.get("items"):
             break
+    active = [it for it in latest.values() if it["status"] == "ACTIVE"]
+    _index_entries_by_org(idx, active, token, cache, deadline)
     for it in latest.values():
         if it["status"] != "ACTIVE" or not it.get("business_name"):
             continue
@@ -165,6 +232,20 @@ def _throttled_search(url: str) -> tuple[Any, Any]:
     return resp, body
 
 
+def _parse_entry(ebody: dict[str, Any], eurl: str, er: Any) -> dict[str, Any]:
+    content = ebody.get("ad_content") or ebody.get("json") or {}
+    emp_d = content.get("employer") or {}
+    orgnr = re.sub(r"\D", "", str(emp_d.get("orgnr") or ""))
+    locs = sorted({(x.get("city") or x.get("municipal") or "").title() for x in (content.get("workLocations") or []) if (x.get("city") or x.get("municipal"))})
+    return {"orgnr": orgnr, "entry_url": eurl, "entry_sha256": er.sha256,
+            "entry_retrieved_at": er.retrieved_at, "status": ebody.get("status"), "title": content.get("title"),
+            "published": (content.get("published") or "")[:10] or None, "expires": (content.get("expires") or "")[:10] or None,
+            "application_due": content.get("applicationDue"), "employer_name": emp_d.get("name"), "homepage": emp_d.get("homepage"),
+            "extent": content.get("extent"), "engagement_type": content.get("engagementtype"), "position_count": content.get("positioncount"),
+            "sector": content.get("sector"), "locations": locs, "source_medium": content.get("source"),
+            "occupation": ((content.get("occupationCategories") or [{}])[0] or {}).get("level2")}
+
+
 def _verify_entry(uuid: str, org: str, subunit_orgs: set[str], token: str | None) -> dict[str, Any] | None:
     if not token:
         return None
@@ -172,17 +253,9 @@ def _verify_entry(uuid: str, org: str, subunit_orgs: set[str], token: str | None
     er, ebody = fetch_json(eurl, headers={"Authorization": "Bearer " + token}, timeout=20)
     if not er.ok or not isinstance(ebody, dict):
         return None
-    content = ebody.get("ad_content") or ebody.get("json") or {}
-    emp_d = content.get("employer") or {}
-    orgnr = re.sub(r"\D", "", str(emp_d.get("orgnr") or ""))
-    locs = sorted({(x.get("city") or x.get("municipal") or "").title() for x in (content.get("workLocations") or []) if (x.get("city") or x.get("municipal"))})
-    return {"orgnr": orgnr, "match": orgnr and (orgnr == org or orgnr in subunit_orgs), "entry_url": eurl, "entry_sha256": er.sha256,
-            "entry_retrieved_at": er.retrieved_at, "status": ebody.get("status"), "title": content.get("title"),
-            "published": (content.get("published") or "")[:10] or None, "expires": (content.get("expires") or "")[:10] or None,
-            "application_due": content.get("applicationDue"), "employer_name": emp_d.get("name"), "homepage": emp_d.get("homepage"),
-            "extent": content.get("extent"), "engagement_type": content.get("engagementtype"), "position_count": content.get("positioncount"),
-            "sector": content.get("sector"), "locations": locs, "source_medium": content.get("source"),
-            "occupation": ((content.get("occupationCategories") or [{}])[0] or {}).get("level2")}
+    v = _parse_entry(ebody, eurl, er)
+    v["match"] = bool(v["orgnr"]) and (v["orgnr"] == org or v["orgnr"] in subunit_orgs)
+    return v
 
 
 def nav_jobs(ident: dict[str, Any], subunits: list[dict[str, Any]], name_unique: bool, feed: NavFeedIndex | None,
@@ -200,8 +273,20 @@ def nav_jobs(ident: dict[str, Any], subunits: list[dict[str, Any]], name_unique:
     seen: set[str] = set()
     if feed is not None and feed.pages:
         out["checked"].append(NAV_FEED + "/api/v1/feed")
+        for o in [org] + sorted(sub_orgs):
+            for v in feed.by_org.get(o, []):
+                if v["uuid"] in seen:
+                    continue
+                seen.add(v["uuid"])
+                job = {**v, "url": NAV_AD_PAGE.format(uuid=v["uuid"]), "match": "nav_feed_employer_orgnr", "employer_orgnr": v["orgnr"]}
+                out["jobs"].append(job)
+                if v.get("homepage"):
+                    out["homepages"].append({"url": v["homepage"], "entry_url": v["entry_url"], "sha256": v["entry_sha256"],
+                                             "retrieved_at": v["entry_retrieved_at"], "span": f"employer.orgnr={v['orgnr']}; employer.homepage={v['homepage']}"})
         names = [name] + [s.get("name") or "" for s in subunits[:50]]
-        for cand in feed.candidates(names)[:40]:
+        for cand in ([] if feed.org_index_complete else feed.candidates(names)[:40]):
+            if cand["uuid"] in seen:
+                continue
             token = token or nav_token()
             v = _verify_entry(cand["uuid"], org, sub_orgs, token)
             if not v:

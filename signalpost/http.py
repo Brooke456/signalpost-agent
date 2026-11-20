@@ -136,7 +136,7 @@ METER = Meter()
 
 _host_sems: dict[str, threading.BoundedSemaphore] = {}
 _host_lock = threading.Lock()
-HOST_LIMITS = {"data.brreg.no": 6, "arbeidsplassen.nav.no": 3, "pam-stilling-feed.nav.no": 3,
+HOST_LIMITS = {"data.brreg.no": 6, "arbeidsplassen.nav.no": 3, "pam-stilling-feed.nav.no": 16,
                "query.wikidata.org": 1, "api.gleif.org": 2}
 DEFAULT_HOST_LIMIT = 2
 

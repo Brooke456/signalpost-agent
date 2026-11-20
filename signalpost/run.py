@@ -149,7 +149,7 @@ def main(argv: list[str] | None = None) -> int:
     feed_pool = ThreadPoolExecutor(max_workers=1)
     pre: dict[str, Any] = {}
     if not a.no_jobs:
-        pre["nav_feed_future"] = feed_pool.submit(build_nav_index, None, 120, deadline)
+        pre["nav_feed_future"] = feed_pool.submit(build_nav_index, state / "nav-feed", 120, deadline)
     bulk = Bulk(a.bulk, orgs) if a.bulk else Bulk(None, [])
     pre["bulk_loaded_at"] = utc_now()
     since = (date.today() - timedelta(days=420)).isoformat() + "T00:00:00.000Z"
@@ -242,7 +242,10 @@ def main(argv: list[str] | None = None) -> int:
     if nf is not None and nf.done():
         try:
             idx = nf.result()
-            report["nav_feed"] = {"pages": idx.pages, "active_ads_indexed": idx.active, "error": idx.error}
+            report["nav_feed"] = {"pages": idx.pages, "active_ads_indexed": idx.active, "error": idx.error,
+                                  "entries_total": idx.entries_total, "entries_fetched": idx.entries_fetched,
+                                  "entries_from_cache": idx.entries_cached, "employer_orgnrs": len(idx.by_org),
+                                  "org_index_complete": idx.org_index_complete}
         except Exception as exc:  # noqa: BLE001
             report["nav_feed"] = {"error": str(exc)}
     feed_pool.shutdown(wait=False, cancel_futures=True)

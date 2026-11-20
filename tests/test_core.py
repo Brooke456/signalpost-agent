@@ -112,3 +112,42 @@ class RefreshAndEnvelope(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class V2Discovery(unittest.TestCase):
+    def test_domain_labels(self):
+        self.assertIn("altaskifer", web.domain_labels("ALTA SKIFERPRODUKTER AS"))
+        self.assertIn("molaanlegg", web.domain_labels("MOLA ANLEGGSSERVICE AS"))
+        self.assertIn("hjoernet", web.domain_labels("HJØRNET FIRMA SERVICE AS"))
+        self.assertEqual(web.domain_labels("HOLDING INVEST AS"), [])
+
+    def test_directory_page_with_many_org_numbers_rejected(self):
+        r = _site("name_guess", domain="sameiet.no", org_found=True, other_orgs={"938702675", "986308970", "923609016"})
+        web._decide(r, IDENT)
+        self.assertEqual(r.verdict, "rejected")
+
+    def test_chain_page_flagged(self):
+        home = web.Page("https://insbo.no/", "https://insbo.no/", 200, "a", "t", title="Insbo", text="Farge og interiør")
+        r = _site("name_guess", domain="insbo.no", org_found=True, org_evidence=("https://insbo.no/kontakt/sirnes", "Org.nr 960711033"),
+                  pages=[home])
+        web._decide(r, {"organisation_number": "960711033", "name": "INSBO SIRNES FARGE & INTERIØR AS"})
+        self.assertEqual(r.verdict, "verified")
+        self.assertTrue(getattr(r, "chain_page", False))
+
+    def test_guess_needs_more_than_name(self):
+        r = _site("name_guess", domain="guriasen.no", name_match=True)
+        web._decide(r, IDENT)
+        self.assertEqual(r.verdict, "rejected")
+        r = _site("name_guess", domain="guriasen.no", name_match=True, email_match=True)
+        web._decide(r, IDENT)
+        self.assertEqual(r.verdict, "verified")
+
+    def test_shared_site_section(self):
+        self.assertTrue(web.is_section_of_shared_site("https://fus.no/ringstabekk", "fus.no", {"name": "RINGSTABEKK FUS BARNEHAGE AS"}))
+        self.assertFalse(web.is_section_of_shared_site("https://www.hafslund.no/no", "hafslund.no", {"name": "HAFSLUND CELSIO AS"}))
+
+    def test_malformed_markup_does_not_crash(self):
+        from signalpost.http import Response
+        body = b'<html><body><svg xmlns:a="x"><a:b {c="1"/></svg><a href="/kontakt">Kontakt</a></body></html>'
+        p = web.parse_page(Response("https://x.no/", "https://x.no/", 200, body, {"content-type": "text/html"}, None, 1, "t", "h"))
+        self.assertIsNotNone(p)

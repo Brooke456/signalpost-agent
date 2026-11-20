@@ -46,7 +46,7 @@ def research_company(org: str, *, bulk: Bulk, prefetched: dict[str, Any], deadli
     if time.monotonic() > deadline:
         col.section("web_presence", "blocked", reason="run time budget exhausted before website step")
     else:
-        site_info = _website(col, ident, bulk, {"homepages": []}, wd, deadline, options)
+        site_info = _website(col, ident, bulk, {"homepages": []}, wd, deadline, {**options, "subunits": subunits})
 
     # ------------------------------------------------------------ hiring (NAV feed + search)
     needs_jobs = False
@@ -162,8 +162,34 @@ def _website(col: Collector, ident: dict[str, Any], bulk: Bulk, nav: dict[str, A
         shared = bulk.email_domain_counts.get(dom, 0) if bulk.email_domain_counts else 0
         if dom not in web.FREE_MAIL and shared <= 25:
             add("https://" + dom + "/", "registry_email_domain", {"span": f"epostadresse: {email}", "shared": shared})
+    subunits = options.get("subunits") or []
+    if not options.get("skip_registry"):
+        # websites / e-mail domains the company declared for its own registered sub-units (same legal entity)
+        for su in subunits[:30]:
+            dec = su.get("_declared") or {}
+            if dec.get("website"):
+                add(dec["website"], "registry_subunit_declared", {**dec, "subunit": su.get("organisation_number"),
+                                                                  "span": f"underenhet {su.get('organisation_number')} hjemmeside: {dec['website']}"})
+            sem = (dec.get("email") or "").strip().lower()
+            if "@" in sem:
+                sd = sem.rsplit("@", 1)[1]
+                shared = bulk.email_domain_counts.get(sd, 0) if bulk.email_domain_counts else 0
+                if sd not in web.FREE_MAIL and shared <= 25:
+                    add("https://" + sd + "/", "registry_email_domain", {**dec, "subunit": su.get("organisation_number"), "shared": shared,
+                                                                         "span": f"underenhet {su.get('organisation_number')} epostadresse: {sem}"})
     if options.get("guess_domains", True):
-        for g in web.guess_domains(ident):
+        core = web.norm_name(web.core_name(ident.get("name") or ""))
+        extra: list[str] = []
+        for su in subunits[:30]:
+            n = su.get("name") or ""
+            c = web.core_name(n)
+            if c and not c.startswith(core) and n not in extra:
+                extra.append(n)  # a trading name registered for one of the company's own workplaces
+        for h in (ident.get("historical_names") or [])[-2:]:
+            n = h.get("navn") if isinstance(h, dict) else str(h)
+            if n and n not in extra:
+                extra.append(n)
+        for g in web.guess_domains(ident, limit=4, extra_names=extra[:4]):
             add(g, "name_guess", {})
 
     results: list[web.SiteResult] = []
@@ -173,12 +199,12 @@ def _website(col: Collector, ident: dict[str, Any], bulk: Bulk, nav: dict[str, A
         if time.monotonic() > deadline:
             col.error("website", "time budget exhausted during website verification")
             break
-        if checked >= 5:
+        if checked >= 7:
             break
         checked += 1
         d0 = web.registered_domain(urllib.parse.urlsplit(url).hostname or "")
         shared = max(bulk.web_domain_counts.get(d0, 0), bulk.email_domain_counts.get(d0, 0)) if bulk.rows_scanned else 0
-        res = web.check_site(url, origin, ident, max_pages=6 if origin != "name_guess" else 4, shared=shared)
+        res = web.check_site(url, origin, ident, max_pages=6 if origin != "name_guess" else 5, shared=shared)
         res.meta = meta  # type: ignore[attr-defined]
         results.append(res)
         if res.verdict == "verified":
@@ -186,7 +212,7 @@ def _website(col: Collector, ident: dict[str, Any], bulk: Bulk, nav: dict[str, A
             break
         if res.verdict == "accepted_registry" and chosen is None:
             chosen = res
-            if origin in ("registry_declared", "nav_employer_homepage") and res.confidence >= 0.96:
+            if origin in ("registry_declared", "registry_subunit_declared", "nav_employer_homepage") and res.confidence >= 0.96:
                 break
     sources = [r.candidate for r in results]
     info: dict[str, Any] = {"candidates": [{"url": r.candidate, "origin": r.origin, "verdict": r.verdict, "reason": r.reason,
@@ -207,6 +233,10 @@ def _website(col: Collector, ident: dict[str, Any], bulk: Bulk, nav: dict[str, A
 
     home = chosen.pages[0]
     final = chosen.final_url or chosen.candidate
+    chain = bool(getattr(chosen, "chain_page", False))
+    if chain and chosen.org_evidence:
+        final = chosen.org_evidence[0]
+        home = next((p for p in chosen.pages if (p.final_url or p.url) == final), home)
     evs = []
     if chosen.org_found and chosen.org_evidence:
         pu, span = chosen.org_evidence
@@ -214,7 +244,10 @@ def _website(col: Collector, ident: dict[str, Any], bulk: Bulk, nav: dict[str, A
         evs.append(col.ev(url=pu, source_class="company_owned_website", retrieved_at=pg.retrieved_at, sha256=pg.sha256,
                           span=span, method="org_number_on_page", rights=WEB_RIGHTS))
     meta = getattr(chosen, "meta", {}) or {}
-    if chosen.origin in ("registry_declared", "registry_email_domain"):
+    if meta.get("subunit"):
+        evs.append(col.ev(url=meta["span_url"], source_class="official_subunits_api", retrieved_at=meta["retrieved_at"], sha256=meta["sha256"],
+                          span=meta["span"], method="brreg_subunit_declared_contact", rights="Enhetsregisteret (NLOD 2.0)"))
+    elif chosen.origin in ("registry_declared", "registry_email_domain"):
         fld = "registry_declared_website" if chosen.origin == "registry_declared" else "registry_email"
         for c in col.claims:
             if c["field"] == fld:
@@ -228,7 +261,8 @@ def _website(col: Collector, ident: dict[str, Any], bulk: Bulk, nav: dict[str, A
     evs.append(col.ev(url=final, source_class="company_owned_website", retrieved_at=home.retrieved_at, sha256=home.sha256,
                       span=f"<title>{home.title}</title>", method="homepage_fetch", rights=WEB_RIGHTS,
                       final_url=final))
-    match = {"verified": "org_number_on_site" if chosen.org_found else ("name_and_registry_phone_on_site" if chosen.phone_match else "name_and_registry_address_on_site"),
+    match = {"verified": "org_number_on_site" if chosen.org_found else ("name_and_registry_phone_on_site" if chosen.phone_match else
+                                                                       "name_and_registry_address_on_site" if chosen.address_match else "name_and_registry_email_on_site"),
              "accepted_registry": "registry_declared_domain"}[chosen.verdict]
     if chosen.origin == "registry_email_domain" and not chosen.org_found:
         match = "registry_email_domain_corroborated"
@@ -236,6 +270,11 @@ def _website(col: Collector, ident: dict[str, Any], bulk: Bulk, nav: dict[str, A
         match = "nav_employer_orgnr_homepage"
     col.claim("web_presence", "official_website", final, evs, key="site", confidence=chosen.confidence, entity_match=match,
               note=chosen.reason)
+    if chain:
+        # company page on a shared chain / franchise domain: the domain's profiles, news and careers belong to the chain
+        col.section("web_presence", "available", sources=sources)
+        info.update({"official_website": final, "verdict": chosen.verdict, "origin": chosen.origin, "domain": chosen.domain, "chain_page": True})
+        return info
     col.claim("web_presence", "website_domain", chosen.domain, evs[:1], key="domain", confidence=chosen.confidence, entity_match=match)
     d = web.describe(chosen)
     hev = col.ev(url=final, source_class="company_owned_website", retrieved_at=home.retrieved_at, sha256=home.sha256,
@@ -259,6 +298,11 @@ def _website(col: Collector, ident: dict[str, Any], bulk: Bulk, nav: dict[str, A
                 col.claim("web_presence", "website_contact_email", m, [e], confidence=chosen.confidence, entity_match=match)
                 break
     accepted, ambiguous = web.social_profiles(chosen, ident)
+    shared_section = web.is_section_of_shared_site(final, chosen.domain, ident)
+    if shared_section:
+        # the company's page sits inside a larger organisation's site (e.g. one kindergarten on a chain domain):
+        # profiles, careers pages and news linked there belong to the chain, so they are not attributed to this company
+        accepted, ambiguous = [], []
     for s in accepted:
         e = col.ev(url=s["found_on"], source_class="company_owned_website", retrieved_at=s["retrieved_at"], sha256=s["page_sha256"],
                    span=f"link to {s['url']} (anchor: {s['anchor']!r})", method="outbound_social_link", rights=WEB_RIGHTS)
@@ -271,19 +315,20 @@ def _website(col: Collector, ident: dict[str, Any], bulk: Bulk, nav: dict[str, A
                           sha256=ambiguous[0]["page_sha256"], span="several profiles per platform linked; not attributed", method="outbound_social_link")],
                   key="amb", availability="ambiguous", confidence=0.5, entity_match="unresolved")
     _wikidata_profiles(col, wd, chosen)
-    for c in web.careers_pages(chosen):
+    for c in ([] if shared_section else web.careers_pages(chosen)):
         e = col.ev(url=c["found_on"], source_class="company_owned_website", retrieved_at=c["retrieved_at"], sha256=c["page_sha256"],
                    span=f"link {c['url']} ({c['anchor']!r})", method="careers_link", rights=WEB_RIGHTS)
         col.claim("hiring", "careers_page", c["url"], [e], confidence=min(chosen.confidence, 0.95), entity_match="linked_from_verified_site")
         col.section("hiring", "available", sources=[c["found_on"]])
-    for j in web.site_jobpostings(chosen):
+    for j in ([] if shared_section else web.site_jobpostings(chosen)):
         e = col.ev(url=j["found_on"], source_class="company_owned_website", retrieved_at=j["retrieved_at"], sha256=j["page_sha256"],
                    span=f"JSON-LD JobPosting title={j['title']!r} datePosted={j['date_posted']}", method="jsonld_jobposting", rights=WEB_RIGHTS)
         col.claim("hiring", "job_posting", {"title": j["title"], "published": j["date_posted"], "expires": j["valid_through"], "url": j["url"],
                                             "source_medium": "company website"}, [e], key=("site", j["title"]), effective_date=j["date_posted"],
                   confidence=min(chosen.confidence, 0.95), entity_match="published_on_verified_site")
         col.section("hiring", "available", sources=[j["found_on"]])
-    _site_news(col, chosen, deadline)
+    if not shared_section:
+        _site_news(col, chosen, deadline)
     col.section("web_presence", "available", sources=sources)
     info.update({"official_website": final, "verdict": chosen.verdict, "origin": chosen.origin, "domain": chosen.domain,
                  "description": d.get("description"), "title": d.get("title")})
