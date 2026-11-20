@@ -1,0 +1,10 @@
+{
+  "check": "idempotent refresh: second run (smoke-100-r2) of the same 100 organisation numbers against the state written by smoke-100-r1, from a clean clone at the submitted commit",
+  "companies": 100,
+  "companies_with_previous_snapshot": 100,
+  "changes_detected": 0,
+  "companies_with_identical_claim_ids": 100,
+  "first_run_snapshot_preserved": true,
+  "changes": [],
+  "note": "Typed change detection (new_role/ended_role, new_location, new_job/closed_job, new_filing, changed_description) and carry-forward on source failure are covered by tests/test_core.py."
+}

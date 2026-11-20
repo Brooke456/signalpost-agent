@@ -1,0 +1,219 @@
+{
+  "companies": 35,
+  "claims_checked": 2544,
+  "correct": 1952,
+  "wrong": 0,
+  "needs_review": 1,
+  "unverifiable_by_script": 591,
+  "precision_on_machine_checked": 1.0,
+  "by_field": {
+    "organisation_number": {
+      "correct": 35
+    },
+    "legal_name": {
+      "correct": 35
+    },
+    "legal_form": {
+      "correct": 35
+    },
+    "registered_business_address": {
+      "correct": 35
+    },
+    "municipality": {
+      "correct": 35
+    },
+    "industry_nace": {
+      "correct": 35
+    },
+    "founded_date": {
+      "correct": 35
+    },
+    "registered_date": {
+      "unverifiable": 35
+    },
+    "registry_status": {
+      "correct": 35
+    },
+    "share_capital": {
+      "correct": 32
+    },
+    "statutory_purpose": {
+      "unverifiable": 34
+    },
+    "registered_activity": {
+      "unverifiable": 35
+    },
+    "vat_registered": {
+      "unverifiable": 35
+    },
+    "in_business_register": {
+      "unverifiable": 35
+    },
+    "part_of_group": {
+      "unverifiable": 35
+    },
+    "registry_phone": {
+      "unverifiable": 14
+    },
+    "registry_profile_url": {
+      "unverifiable": 35
+    },
+    "revenue": {
+      "correct": 67
+    },
+    "operating_expenses": {
+      "correct": 94
+    },
+    "operating_result": {
+      "correct": 94
+    },
+    "net_financial_items": {
+      "correct": 87
+    },
+    "profit_before_tax": {
+      "correct": 96
+    },
+    "annual_result": {
+      "correct": 99
+    },
+    "total_assets": {
+      "correct": 99
+    },
+    "fixed_assets": {
+      "correct": 92
+    },
+    "current_assets": {
+      "correct": 96
+    },
+    "cash_and_bank": {
+      "correct": 91
+    },
+    "equity": {
+      "correct": 98
+    },
+    "total_debt": {
+      "correct": 95
+    },
+    "short_term_debt": {
+      "correct": 91
+    },
+    "long_term_debt": {
+      "correct": 77
+    },
+    "accounts_audited": {
+      "unverifiable": 99
+    },
+    "annual_accounts_copy": {
+      "unverifiable": 99
+    },
+    "fiscal_years_available": {
+      "unverifiable": 35
+    },
+    "ceo": {
+      "correct": 23
+    },
+    "board_chair": {
+      "correct": 34
+    },
+    "board_member": {
+      "correct": 32
+    },
+    "registry_change": {
+      "unverifiable": 49
+    },
+    "registry_email": {
+      "unverifiable": 13
+    },
+    "payroll_expenses": {
+      "correct": 77
+    },
+    "tax_expense": {
+      "correct": 64
+    },
+    "board_deputy_member": {
+      "correct": 15
+    },
+    "accountant": {
+      "correct": 25
+    },
+    "lei": {
+      "unverifiable": 6
+    },
+    "sales_revenue": {
+      "correct": 48
+    },
+    "registered_workplace": {
+      "correct": 24
+    },
+    "registry_declared_website": {
+      "correct": 2
+    },
+    "official_website": {
+      "correct": 2,
+      "needs_review": 1
+    },
+    "website_domain": {
+      "unverifiable": 3
+    },
+    "website_title": {
+      "unverifiable": 3
+    },
+    "website_description": {
+      "unverifiable": 2
+    },
+    "postal_address": {
+      "unverifiable": 11
+    },
+    "business_manager": {
+      "correct": 4
+    },
+    "auditor": {
+      "correct": 11
+    },
+    "former_name": {
+      "unverifiable": 6
+    },
+    "parent_company": {
+      "unverifiable": 2
+    },
+    "group_ultimate_parent": {
+      "unverifiable": 2
+    },
+    "registered_employees": {
+      "correct": 1
+    },
+    "public_brand_name": {
+      "unverifiable": 1
+    },
+    "website_language": {
+      "unverifiable": 1
+    },
+    "general_partner": {
+      "correct": 2
+    },
+    "wikidata_item": {
+      "unverifiable": 1
+    }
+  },
+  "wrong_rows": [],
+  "review_rows": [
+    {
+      "org": "982942942",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "no org number in raw HTML",
+      "value": "\"https://brandmaker.no/\""
+    }
+  ],
+  "manual_review": [
+    {
+      "org": "982942942",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "no org number in raw HTML",
+      "value": "\"https://brandmaker.no/\"",
+      "note": "Site footer prints 'Brandmaker AS | Rådhusgaten 2 | 5014 Bergen', identical to the registered business address of BRANDMAKER AS (982942942)."
+    }
+  ],
+  "precision_including_manual_review": 1.0
+}

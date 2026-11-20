@@ -1,0 +1,464 @@
+{
+  "run_id": "smoke-100-r1",
+  "agent_version": "1.0.0",
+  "started_at": "2026-11-20T17:49:13Z",
+  "completed_at": "2026-11-20T17:52:50Z",
+  "wall_clock_s": 217.7,
+  "expected_count": 100,
+  "emitted_envelopes": 100,
+  "terminal_availability": {
+    "available": 100,
+    "not_available": 0,
+    "failed": 0
+  },
+  "coverage": {
+    "identity": {
+      "available_companies": 100,
+      "states": {
+        "available": 100
+      },
+      "claims": 1757
+    },
+    "financials": {
+      "available_companies": 100,
+      "states": {
+        "available": 100
+      },
+      "claims": 4812
+    },
+    "leadership": {
+      "available_companies": 100,
+      "states": {
+        "available": 100
+      },
+      "claims": 385
+    },
+    "workplaces": {
+      "available_companies": 74,
+      "states": {
+        "available": 74,
+        "not_available": 26
+      },
+      "claims": 77
+    },
+    "web_presence": {
+      "available_companies": 10,
+      "states": {
+        "available": 10,
+        "not_available": 82,
+        "ambiguous": 5,
+        "failed": 3
+      },
+      "claims": 54
+    },
+    "hiring": {
+      "available_companies": 0,
+      "states": {
+        "not_available": 100
+      },
+      "claims": 0
+    },
+    "activity": {
+      "available_companies": 100,
+      "states": {
+        "available": 100
+      },
+      "claims": 201
+    }
+  },
+  "fields": {
+    "accountant": {
+      "claims": 67,
+      "companies": 67
+    },
+    "accounts_audited": {
+      "claims": 276,
+      "companies": 100
+    },
+    "annual_accounts_copy": {
+      "claims": 276,
+      "companies": 100
+    },
+    "annual_result": {
+      "claims": 276,
+      "companies": 100
+    },
+    "auditor": {
+      "claims": 27,
+      "companies": 27
+    },
+    "board_chair": {
+      "claims": 99,
+      "companies": 99
+    },
+    "board_deputy_member": {
+      "claims": 31,
+      "companies": 26
+    },
+    "board_member": {
+      "claims": 87,
+      "companies": 49
+    },
+    "business_manager": {
+      "claims": 8,
+      "companies": 8
+    },
+    "cash_and_bank": {
+      "claims": 264,
+      "companies": 97
+    },
+    "ceo": {
+      "claims": 64,
+      "companies": 64
+    },
+    "company_news": {
+      "claims": 24,
+      "companies": 3
+    },
+    "current_assets": {
+      "claims": 273,
+      "companies": 100
+    },
+    "equity": {
+      "claims": 274,
+      "companies": 100
+    },
+    "fiscal_years_available": {
+      "claims": 100,
+      "companies": 100
+    },
+    "fixed_assets": {
+      "claims": 259,
+      "companies": 98
+    },
+    "former_name": {
+      "claims": 24,
+      "companies": 18
+    },
+    "founded_date": {
+      "claims": 100,
+      "companies": 100
+    },
+    "general_partner": {
+      "claims": 2,
+      "companies": 1
+    },
+    "group_accounts_audited": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_annual_result": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_cash_and_bank": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_current_assets": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_equity": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_fixed_assets": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_long_term_debt": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_net_financial_items": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_operating_expenses": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_operating_result": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_payroll_expenses": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_profit_before_tax": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_revenue": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_sales_revenue": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_short_term_debt": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_tax_expense": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_total_assets": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_total_debt": {
+      "claims": 1,
+      "companies": 1
+    },
+    "group_ultimate_parent": {
+      "claims": 6,
+      "companies": 6
+    },
+    "in_business_register": {
+      "claims": 100,
+      "companies": 100
+    },
+    "industry_nace": {
+      "claims": 100,
+      "companies": 100
+    },
+    "legal_form": {
+      "claims": 100,
+      "companies": 100
+    },
+    "legal_name": {
+      "claims": 100,
+      "companies": 100
+    },
+    "lei": {
+      "claims": 21,
+      "companies": 21
+    },
+    "long_term_debt": {
+      "claims": 212,
+      "companies": 96
+    },
+    "municipality": {
+      "claims": 100,
+      "companies": 100
+    },
+    "net_financial_items": {
+      "claims": 258,
+      "companies": 94
+    },
+    "official_website": {
+      "claims": 10,
+      "companies": 10
+    },
+    "operating_expenses": {
+      "claims": 271,
+      "companies": 100
+    },
+    "operating_result": {
+      "claims": 271,
+      "companies": 100
+    },
+    "organisation_number": {
+      "claims": 100,
+      "companies": 100
+    },
+    "parent_company": {
+      "claims": 6,
+      "companies": 6
+    },
+    "part_of_group": {
+      "claims": 100,
+      "companies": 100
+    },
+    "payroll_expenses": {
+      "claims": 186,
+      "companies": 73
+    },
+    "postal_address": {
+      "claims": 25,
+      "companies": 25
+    },
+    "profit_before_tax": {
+      "claims": 271,
+      "companies": 100
+    },
+    "public_brand_name": {
+      "claims": 5,
+      "companies": 5
+    },
+    "registered_activity": {
+      "claims": 100,
+      "companies": 100
+    },
+    "registered_business_address": {
+      "claims": 100,
+      "companies": 100
+    },
+    "registered_date": {
+      "claims": 100,
+      "companies": 100
+    },
+    "registered_employees": {
+      "claims": 10,
+      "companies": 10
+    },
+    "registered_workplace": {
+      "claims": 77,
+      "companies": 74
+    },
+    "registry_change": {
+      "claims": 177,
+      "companies": 100
+    },
+    "registry_declared_website": {
+      "claims": 7,
+      "companies": 7
+    },
+    "registry_email": {
+      "claims": 26,
+      "companies": 26
+    },
+    "registry_phone": {
+      "claims": 29,
+      "companies": 29
+    },
+    "registry_profile_url": {
+      "claims": 100,
+      "companies": 100
+    },
+    "registry_status": {
+      "claims": 100,
+      "companies": 100
+    },
+    "revenue": {
+      "claims": 200,
+      "companies": 75
+    },
+    "sales_revenue": {
+      "claims": 148,
+      "companies": 58
+    },
+    "share_capital": {
+      "claims": 93,
+      "companies": 93
+    },
+    "short_term_debt": {
+      "claims": 257,
+      "companies": 95
+    },
+    "social_profile": {
+      "claims": 7,
+      "companies": 3
+    },
+    "statutory_purpose": {
+      "claims": 99,
+      "companies": 99
+    },
+    "subsidiary": {
+      "claims": 5,
+      "companies": 4
+    },
+    "tax_expense": {
+      "claims": 179,
+      "companies": 66
+    },
+    "total_assets": {
+      "claims": 276,
+      "companies": 100
+    },
+    "total_debt": {
+      "claims": 267,
+      "companies": 98
+    },
+    "vat_registered": {
+      "claims": 100,
+      "companies": 100
+    },
+    "website_contact_email": {
+      "claims": 2,
+      "companies": 2
+    },
+    "website_description": {
+      "claims": 7,
+      "companies": 7
+    },
+    "website_domain": {
+      "claims": 10,
+      "companies": 10
+    },
+    "website_language": {
+      "claims": 8,
+      "companies": 8
+    },
+    "website_title": {
+      "claims": 10,
+      "companies": 10
+    },
+    "wikidata_item": {
+      "claims": 1,
+      "companies": 1
+    }
+  },
+  "operations": {
+    "requests": 1253,
+    "bytes": 24055057,
+    "requests_by_host_top": {
+      "data.brreg.no": 411,
+      "pam-stilling-feed.nav.no": 229,
+      "www.maritim-consultants.no": 12,
+      "arbeidsplassen.nav.no": 10,
+      "www.studiox.no": 8,
+      "www.rbproffpartner.no": 8,
+      "svorka.no": 7,
+      "atg.no": 7,
+      "www.facebook.com": 7,
+      "sago.com": 7,
+      "skunkworks.com": 7,
+      "www.differgroup.com": 7,
+      "devoldsregnskap.no": 7,
+      "a-seafood.com": 7,
+      "www.webhuset.no": 7
+    },
+    "request_p50_ms": 804,
+    "request_p95_ms": 4907,
+    "company_p50_ms": 11491,
+    "company_p95_ms": 49226,
+    "third_party_cost_usd": 0.0,
+    "llm_used": false
+  },
+  "registry_snapshot": {
+    "path": "/workspace/work/signalpost/data/enheter.csv.gz",
+    "sha256": "fb2a19135d9a36c2a3780137834f85253361146919e71524e796af35629dba0f",
+    "rows_scanned": 1181715,
+    "selected": 100,
+    "source": "https://data.brreg.no/enhetsregisteret/api/enheter/lastned/csv"
+  },
+  "refresh": {
+    "snapshot": "/tmp/clean-state/runs/smoke-100-r1/envelopes.jsonl",
+    "companies_with_previous": 0,
+    "changes": 0,
+    "material_changes": 0
+  },
+  "validation": {
+    "passed": true,
+    "checks": {
+      "exact_expected_count": true,
+      "one_envelope_per_input": true,
+      "unique_organisation_numbers": true,
+      "all_states_terminal": true,
+      "every_claim_has_evidence": true,
+      "evidence_references_resolve": true
+    },
+    "claims_without_evidence": 0
+  },
+  "nav_feed": {
+    "pages": 228,
+    "active_ads_indexed": 9805,
+    "error": null
+  }
+}
