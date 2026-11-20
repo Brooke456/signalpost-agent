@@ -1,0 +1,477 @@
+{
+  "run_id": "dev2",
+  "agent_version": "1.0.0",
+  "started_at": "2026-11-20T17:38:23Z",
+  "completed_at": "2026-11-20T17:41:48Z",
+  "wall_clock_s": 206.0,
+  "expected_count": 40,
+  "emitted_envelopes": 40,
+  "terminal_availability": {
+    "available": 40,
+    "not_available": 0,
+    "failed": 0
+  },
+  "coverage": {
+    "identity": {
+      "available_companies": 40,
+      "states": {
+        "available": 40
+      },
+      "claims": 819
+    },
+    "financials": {
+      "available_companies": 40,
+      "states": {
+        "available": 40
+      },
+      "claims": 2320
+    },
+    "leadership": {
+      "available_companies": 40,
+      "states": {
+        "available": 40
+      },
+      "claims": 263
+    },
+    "workplaces": {
+      "available_companies": 40,
+      "states": {
+        "available": 40
+      },
+      "claims": 156
+    },
+    "web_presence": {
+      "available_companies": 22,
+      "states": {
+        "not_available": 15,
+        "available": 22,
+        "failed": 1,
+        "ambiguous": 1,
+        "blocked": 1
+      },
+      "claims": 150
+    },
+    "hiring": {
+      "available_companies": 10,
+      "states": {
+        "not_available": 30,
+        "available": 10
+      },
+      "claims": 22
+    },
+    "activity": {
+      "available_companies": 40,
+      "states": {
+        "available": 40
+      },
+      "claims": 401
+    }
+  },
+  "fields": {
+    "accountant": {
+      "claims": 30,
+      "companies": 28
+    },
+    "accounts_audited": {
+      "claims": 120,
+      "companies": 40
+    },
+    "active_job_postings_count": {
+      "claims": 1,
+      "companies": 1
+    },
+    "annual_accounts_copy": {
+      "claims": 120,
+      "companies": 40
+    },
+    "annual_result": {
+      "claims": 120,
+      "companies": 40
+    },
+    "auditor": {
+      "claims": 35,
+      "companies": 35
+    },
+    "board_chair": {
+      "claims": 39,
+      "companies": 39
+    },
+    "board_deputy_member": {
+      "claims": 28,
+      "companies": 8
+    },
+    "board_member": {
+      "claims": 88,
+      "companies": 34
+    },
+    "careers_page": {
+      "claims": 19,
+      "companies": 10
+    },
+    "cash_and_bank": {
+      "claims": 114,
+      "companies": 38
+    },
+    "ceo": {
+      "claims": 40,
+      "companies": 40
+    },
+    "company_news": {
+      "claims": 50,
+      "companies": 7
+    },
+    "current_assets": {
+      "claims": 120,
+      "companies": 40
+    },
+    "equity": {
+      "claims": 120,
+      "companies": 40
+    },
+    "fiscal_years_available": {
+      "claims": 40,
+      "companies": 40
+    },
+    "fixed_assets": {
+      "claims": 118,
+      "companies": 40
+    },
+    "former_name": {
+      "claims": 25,
+      "companies": 16
+    },
+    "founded_date": {
+      "claims": 40,
+      "companies": 40
+    },
+    "general_partner": {
+      "claims": 3,
+      "companies": 1
+    },
+    "group_accounts_audited": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_annual_result": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_cash_and_bank": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_current_assets": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_equity": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_fixed_assets": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_long_term_debt": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_net_financial_items": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_operating_expenses": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_operating_result": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_payroll_expenses": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_profit_before_tax": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_revenue": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_sales_revenue": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_short_term_debt": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_tax_expense": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_total_assets": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_total_debt": {
+      "claims": 3,
+      "companies": 2
+    },
+    "group_ultimate_parent": {
+      "claims": 10,
+      "companies": 10
+    },
+    "in_business_register": {
+      "claims": 40,
+      "companies": 40
+    },
+    "industry_nace": {
+      "claims": 40,
+      "companies": 40
+    },
+    "job_posting": {
+      "claims": 2,
+      "companies": 1
+    },
+    "legal_form": {
+      "claims": 40,
+      "companies": 40
+    },
+    "legal_name": {
+      "claims": 40,
+      "companies": 40
+    },
+    "lei": {
+      "claims": 6,
+      "companies": 6
+    },
+    "long_term_debt": {
+      "claims": 94,
+      "companies": 40
+    },
+    "municipality": {
+      "claims": 40,
+      "companies": 40
+    },
+    "net_financial_items": {
+      "claims": 120,
+      "companies": 40
+    },
+    "official_website": {
+      "claims": 21,
+      "companies": 21
+    },
+    "operating_expenses": {
+      "claims": 120,
+      "companies": 40
+    },
+    "operating_result": {
+      "claims": 120,
+      "companies": 40
+    },
+    "organisation_number": {
+      "claims": 40,
+      "companies": 40
+    },
+    "parent_company": {
+      "claims": 10,
+      "companies": 10
+    },
+    "part_of_group": {
+      "claims": 40,
+      "companies": 40
+    },
+    "payroll_expenses": {
+      "claims": 117,
+      "companies": 39
+    },
+    "postal_address": {
+      "claims": 14,
+      "companies": 14
+    },
+    "profit_before_tax": {
+      "claims": 120,
+      "companies": 40
+    },
+    "public_brand_name": {
+      "claims": 14,
+      "companies": 14
+    },
+    "registered_activity": {
+      "claims": 40,
+      "companies": 40
+    },
+    "registered_business_address": {
+      "claims": 40,
+      "companies": 40
+    },
+    "registered_date": {
+      "claims": 40,
+      "companies": 40
+    },
+    "registered_employees": {
+      "claims": 40,
+      "companies": 40
+    },
+    "registered_workplace": {
+      "claims": 156,
+      "companies": 40
+    },
+    "registry_change": {
+      "claims": 351,
+      "companies": 40
+    },
+    "registry_declared_website": {
+      "claims": 12,
+      "companies": 12
+    },
+    "registry_email": {
+      "claims": 15,
+      "companies": 15
+    },
+    "registry_phone": {
+      "claims": 22,
+      "companies": 22
+    },
+    "registry_profile_url": {
+      "claims": 40,
+      "companies": 40
+    },
+    "registry_status": {
+      "claims": 40,
+      "companies": 40
+    },
+    "revenue": {
+      "claims": 120,
+      "companies": 40
+    },
+    "sales_revenue": {
+      "claims": 113,
+      "companies": 38
+    },
+    "secondary_industry_nace": {
+      "claims": 5,
+      "companies": 4
+    },
+    "share_capital": {
+      "claims": 39,
+      "companies": 39
+    },
+    "short_term_debt": {
+      "claims": 120,
+      "companies": 40
+    },
+    "social_profile": {
+      "claims": 37,
+      "companies": 17
+    },
+    "statutory_purpose": {
+      "claims": 40,
+      "companies": 40
+    },
+    "subsidiary": {
+      "claims": 4,
+      "companies": 3
+    },
+    "tax_expense": {
+      "claims": 110,
+      "companies": 38
+    },
+    "total_assets": {
+      "claims": 120,
+      "companies": 40
+    },
+    "total_debt": {
+      "claims": 120,
+      "companies": 40
+    },
+    "vat_registered": {
+      "claims": 40,
+      "companies": 40
+    },
+    "website_contact_email": {
+      "claims": 13,
+      "companies": 12
+    },
+    "website_description": {
+      "claims": 16,
+      "companies": 16
+    },
+    "website_domain": {
+      "claims": 21,
+      "companies": 21
+    },
+    "website_language": {
+      "claims": 21,
+      "companies": 21
+    },
+    "website_title": {
+      "claims": 21,
+      "companies": 21
+    },
+    "wikidata_item": {
+      "claims": 3,
+      "companies": 3
+    }
+  },
+  "operations": {
+    "requests": 656,
+    "bytes": 21486895,
+    "requests_by_host_top": {
+      "pam-stilling-feed.nav.no": 231,
+      "data.brreg.no": 172,
+      "arbeidsplassen.nav.no": 26,
+      "assanering.no": 10,
+      "trigger-as.no": 9,
+      "zephyr.no": 9,
+      "www.hafslund.no": 9,
+      "www.bwt.com": 9,
+      "www.deloitte.com": 9,
+      "carlings.com": 8,
+      "www.obforum.com": 8,
+      "avco.no": 7,
+      "www.amestoaccounthouse.no": 7,
+      "www.lindbak.no": 7,
+      "nv-t.no": 7
+    },
+    "request_p50_ms": 820,
+    "request_p95_ms": 4931,
+    "company_p50_ms": 15360,
+    "company_p95_ms": 38201,
+    "third_party_cost_usd": 0.0,
+    "llm_used": false
+  },
+  "registry_snapshot": {
+    "path": "../data/enheter.csv.gz",
+    "sha256": "fb2a19135d9a36c2a3780137834f85253361146919e71524e796af35629dba0f",
+    "rows_scanned": 1181715,
+    "selected": 40,
+    "source": "https://data.brreg.no/enhetsregisteret/api/enheter/lastned/csv"
+  },
+  "refresh": {
+    "snapshot": "/tmp/d2/state/runs/dev2/envelopes.jsonl",
+    "companies_with_previous": 0,
+    "changes": 0,
+    "material_changes": 0
+  },
+  "validation": {
+    "passed": true,
+    "checks": {
+      "exact_expected_count": true,
+      "one_envelope_per_input": true,
+      "unique_organisation_numbers": true,
+      "all_states_terminal": true,
+      "every_claim_has_evidence": true,
+      "evidence_references_resolve": true
+    },
+    "claims_without_evidence": 0
+  },
+  "nav_feed": {
+    "pages": 228,
+    "active_ads_indexed": 9805,
+    "error": null
+  }
+}

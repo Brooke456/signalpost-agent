@@ -1,0 +1,430 @@
+{
+  "companies": 40,
+  "claims_checked": 4131,
+  "correct": 2917,
+  "wrong": 0,
+  "needs_review": 10,
+  "unverifiable_by_script": 1204,
+  "precision_on_machine_checked": 1.0,
+  "by_field": {
+    "organisation_number": {
+      "correct": 40
+    },
+    "legal_name": {
+      "correct": 40
+    },
+    "legal_form": {
+      "correct": 40
+    },
+    "registered_business_address": {
+      "correct": 40
+    },
+    "postal_address": {
+      "unverifiable": 14
+    },
+    "municipality": {
+      "correct": 40
+    },
+    "industry_nace": {
+      "correct": 40
+    },
+    "registered_employees": {
+      "correct": 40
+    },
+    "founded_date": {
+      "correct": 40
+    },
+    "registered_date": {
+      "unverifiable": 40
+    },
+    "registry_status": {
+      "correct": 40
+    },
+    "share_capital": {
+      "correct": 39
+    },
+    "statutory_purpose": {
+      "unverifiable": 40
+    },
+    "registered_activity": {
+      "unverifiable": 40
+    },
+    "vat_registered": {
+      "unverifiable": 40
+    },
+    "in_business_register": {
+      "unverifiable": 40
+    },
+    "part_of_group": {
+      "unverifiable": 40
+    },
+    "registry_declared_website": {
+      "correct": 12
+    },
+    "registry_phone": {
+      "unverifiable": 22
+    },
+    "registry_email": {
+      "unverifiable": 15
+    },
+    "registry_profile_url": {
+      "unverifiable": 40
+    },
+    "revenue": {
+      "correct": 120
+    },
+    "sales_revenue": {
+      "correct": 113
+    },
+    "operating_expenses": {
+      "correct": 120
+    },
+    "payroll_expenses": {
+      "correct": 117
+    },
+    "operating_result": {
+      "correct": 120
+    },
+    "net_financial_items": {
+      "correct": 120
+    },
+    "profit_before_tax": {
+      "correct": 120
+    },
+    "tax_expense": {
+      "correct": 110
+    },
+    "annual_result": {
+      "correct": 120
+    },
+    "total_assets": {
+      "correct": 120
+    },
+    "fixed_assets": {
+      "correct": 118
+    },
+    "current_assets": {
+      "correct": 120
+    },
+    "cash_and_bank": {
+      "correct": 114
+    },
+    "equity": {
+      "correct": 120
+    },
+    "total_debt": {
+      "correct": 120
+    },
+    "short_term_debt": {
+      "correct": 120
+    },
+    "long_term_debt": {
+      "correct": 94
+    },
+    "accounts_audited": {
+      "unverifiable": 120
+    },
+    "annual_accounts_copy": {
+      "unverifiable": 120
+    },
+    "fiscal_years_available": {
+      "unverifiable": 40
+    },
+    "ceo": {
+      "correct": 40
+    },
+    "board_chair": {
+      "correct": 39
+    },
+    "board_member": {
+      "correct": 88
+    },
+    "auditor": {
+      "correct": 35
+    },
+    "accountant": {
+      "correct": 30
+    },
+    "registered_workplace": {
+      "correct": 156
+    },
+    "official_website": {
+      "correct": 13,
+      "needs_review": 8
+    },
+    "website_domain": {
+      "unverifiable": 21
+    },
+    "website_title": {
+      "unverifiable": 21
+    },
+    "website_language": {
+      "unverifiable": 21
+    },
+    "website_contact_email": {
+      "unverifiable": 13
+    },
+    "social_profile": {
+      "correct": 35,
+      "needs_review": 2
+    },
+    "registry_change": {
+      "unverifiable": 351
+    },
+    "parent_company": {
+      "unverifiable": 10
+    },
+    "group_ultimate_parent": {
+      "unverifiable": 10
+    },
+    "wikidata_item": {
+      "unverifiable": 3
+    },
+    "public_brand_name": {
+      "unverifiable": 14
+    },
+    "website_description": {
+      "unverifiable": 16
+    },
+    "company_news": {
+      "unverifiable": 50
+    },
+    "former_name": {
+      "unverifiable": 25
+    },
+    "careers_page": {
+      "unverifiable": 19
+    },
+    "board_deputy_member": {
+      "correct": 28
+    },
+    "secondary_industry_nace": {
+      "unverifiable": 5
+    },
+    "subsidiary": {
+      "unverifiable": 4
+    },
+    "lei": {
+      "unverifiable": 6
+    },
+    "job_posting": {
+      "correct": 2
+    },
+    "active_job_postings_count": {
+      "unverifiable": 1
+    },
+    "group_revenue": {
+      "correct": 3
+    },
+    "group_sales_revenue": {
+      "correct": 3
+    },
+    "group_operating_expenses": {
+      "correct": 3
+    },
+    "group_payroll_expenses": {
+      "correct": 3
+    },
+    "group_operating_result": {
+      "correct": 3
+    },
+    "group_net_financial_items": {
+      "correct": 3
+    },
+    "group_profit_before_tax": {
+      "correct": 3
+    },
+    "group_tax_expense": {
+      "correct": 3
+    },
+    "group_annual_result": {
+      "correct": 3
+    },
+    "group_total_assets": {
+      "correct": 3
+    },
+    "group_fixed_assets": {
+      "correct": 3
+    },
+    "group_current_assets": {
+      "correct": 3
+    },
+    "group_cash_and_bank": {
+      "correct": 3
+    },
+    "group_equity": {
+      "correct": 3
+    },
+    "group_total_debt": {
+      "correct": 3
+    },
+    "group_short_term_debt": {
+      "correct": 3
+    },
+    "group_long_term_debt": {
+      "correct": 3
+    },
+    "group_accounts_audited": {
+      "unverifiable": 3
+    },
+    "general_partner": {
+      "correct": 3
+    }
+  },
+  "wrong_rows": [],
+  "review_rows": [
+    {
+      "org": "981214781",
+      "field": "social_profile",
+      "verdict": "needs_review",
+      "why": "wikidata_sparql",
+      "value": "{\"platform\": \"facebook\", \"url\": \"https://www.facebook.com/carlingsofficial\", \"handle\": \"carlingsofficial\"}"
+    },
+    {
+      "org": "981214781",
+      "field": "social_profile",
+      "verdict": "needs_review",
+      "why": "wikidata_sparql",
+      "value": "{\"platform\": \"instagram\", \"url\": \"https://www.instagram.com/carlings_official\", \"handle\": \"carlings_official\"}"
+    },
+    {
+      "org": "932965771",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "no org number in raw HTML",
+      "value": "\"https://motorpart.no/\""
+    },
+    {
+      "org": "977296919",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "no org number in raw HTML",
+      "value": "\"https://www.hafslund.no/no\""
+    },
+    {
+      "org": "941834957",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "no org number in raw HTML",
+      "value": "\"https://www.vestnes-fjordhotell.no/\""
+    },
+    {
+      "org": "994684566",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "no org number in raw HTML",
+      "value": "\"https://www.paparazzi.no/\""
+    },
+    {
+      "org": "981056345",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "registry e-mail domain (name match)",
+      "value": "\"https://www.opaker.no/\""
+    },
+    {
+      "org": "919847816",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "no org number in raw HTML",
+      "value": "\"https://norsksprinklerteknikk.no/\""
+    },
+    {
+      "org": "921989342",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "no org number in raw HTML",
+      "value": "\"https://ecosol.no/\""
+    },
+    {
+      "org": "994116177",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "no org number in raw HTML",
+      "value": "\"https://www.deloitte.com/no/no.html\""
+    }
+  ],
+  "manual_review": [
+    {
+      "org": "981214781",
+      "field": "social_profile",
+      "verdict": "correct",
+      "why": "wikidata_sparql",
+      "value": "{\"platform\": \"facebook\", \"url\": \"https://www.facebook.com/carlingsofficial\", \"handle\": \"carlingsofficial\"}",
+      "note": "Wikidata item keyed by P2333=981214781 (Carlings) lists these handles; accepted as org-number-keyed open data."
+    },
+    {
+      "org": "981214781",
+      "field": "social_profile",
+      "verdict": "correct",
+      "why": "wikidata_sparql",
+      "value": "{\"platform\": \"instagram\", \"url\": \"https://www.instagram.com/carlings_official\", \"handle\": \"carlings_official\"}",
+      "note": "Wikidata item keyed by P2333=981214781 (Carlings) lists these handles; accepted as org-number-keyed open data."
+    },
+    {
+      "org": "932965771",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "no org number in raw HTML",
+      "value": "\"https://motorpart.no/\"",
+      "note": "Org number printed on https://motorpart.no/personvernerklaering ('Motor Part AS ... (org. 932 965 771)'); audit script only checked the homepage."
+    },
+    {
+      "org": "977296919",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "no org number in raw HTML",
+      "value": "\"https://www.hafslund.no/no\"",
+      "note": "Registry hjemmeside www.celsio.no (declared by the company) redirects to hafslund.no; site names Hafslund Celsio."
+    },
+    {
+      "org": "941834957",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "no org number in raw HTML",
+      "value": "\"https://www.vestnes-fjordhotell.no/\"",
+      "note": "Homepage prints 'Vestnes Fjordhotell AS' and registry phone 71 18 89 99."
+    },
+    {
+      "org": "994684566",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "no org number in raw HTML",
+      "value": "\"https://www.paparazzi.no/\"",
+      "note": "Homepage names Paparazzi and the registered address Nedre Langgate 20, 3126."
+    },
+    {
+      "org": "981056345",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "registry e-mail domain (name match)",
+      "value": "\"https://www.opaker.no/\"",
+      "note": "Registry e-mail opaker@opaker.no; homepage title 'Opaker Gård'."
+    },
+    {
+      "org": "919847816",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "no org number in raw HTML",
+      "value": "\"https://norsksprinklerteknikk.no/\"",
+      "note": "Homepage names Norsk Sprinklerteknikk and the registered address Versvikvegen 11, 3937."
+    },
+    {
+      "org": "921989342",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "no org number in raw HTML",
+      "value": "\"https://ecosol.no/\"",
+      "note": "Homepage 'Besøk oss Dillingtoppen 23 1570 Dilling' = registered business address of ECOSOL AS."
+    },
+    {
+      "org": "994116177",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "no org number in raw HTML",
+      "value": "\"https://www.deloitte.com/no/no.html\"",
+      "note": "Registry hjemmeside www.deloitte.no (declared by the company) redirects to deloitte.com/no; Deloitte Advokatfirma is the Norwegian Deloitte law firm."
+    }
+  ],
+  "precision_including_manual_review": 1.0
+}
