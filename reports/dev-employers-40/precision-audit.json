@@ -1,10 +1,10 @@
 {
   "companies": 40,
-  "claims_checked": 4131,
-  "correct": 2917,
+  "claims_checked": 4162,
+  "correct": 2921,
   "wrong": 0,
   "needs_review": 10,
-  "unverifiable_by_script": 1204,
+  "unverifiable_by_script": 1231,
   "precision_on_machine_checked": 1.0,
   "by_field": {
     "organisation_number": {
@@ -149,23 +149,23 @@
       "correct": 156
     },
     "official_website": {
-      "correct": 13,
+      "correct": 16,
       "needs_review": 8
     },
     "website_domain": {
-      "unverifiable": 21
+      "unverifiable": 24
     },
     "website_title": {
-      "unverifiable": 21
+      "unverifiable": 24
     },
     "website_language": {
-      "unverifiable": 21
+      "unverifiable": 24
     },
     "website_contact_email": {
-      "unverifiable": 13
+      "unverifiable": 16
     },
     "social_profile": {
-      "correct": 35,
+      "correct": 36,
       "needs_review": 2
     },
     "registry_change": {
@@ -181,13 +181,13 @@
       "unverifiable": 3
     },
     "public_brand_name": {
-      "unverifiable": 14
-    },
-    "website_description": {
       "unverifiable": 16
     },
+    "website_description": {
+      "unverifiable": 19
+    },
     "company_news": {
-      "unverifiable": 50
+      "unverifiable": 60
     },
     "former_name": {
       "unverifiable": 25
@@ -288,13 +288,6 @@
       "value": "{\"platform\": \"instagram\", \"url\": \"https://www.instagram.com/carlings_official\", \"handle\": \"carlings_official\"}"
     },
     {
-      "org": "932965771",
-      "field": "official_website",
-      "verdict": "needs_review",
-      "why": "no org number in raw HTML",
-      "value": "\"https://motorpart.no/\""
-    },
-    {
       "org": "977296919",
       "field": "official_website",
       "verdict": "needs_review",
@@ -302,10 +295,17 @@
       "value": "\"https://www.hafslund.no/no\""
     },
     {
-      "org": "941834957",
+      "org": "916162812",
       "field": "official_website",
       "verdict": "needs_review",
       "why": "no org number in raw HTML",
+      "value": "\"https://www.molaanlegg.com/\""
+    },
+    {
+      "org": "941834957",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "registry phone re-found on site (check legal name)",
       "value": "\"https://www.vestnes-fjordhotell.no/\""
     },
     {
@@ -362,14 +362,6 @@
       "note": "Wikidata item keyed by P2333=981214781 (Carlings) lists these handles; accepted as org-number-keyed open data."
     },
     {
-      "org": "932965771",
-      "field": "official_website",
-      "verdict": "correct",
-      "why": "no org number in raw HTML",
-      "value": "\"https://motorpart.no/\"",
-      "note": "Org number printed on https://motorpart.no/personvernerklaering ('Motor Part AS ... (org. 932 965 771)'); audit script only checked the homepage."
-    },
-    {
       "org": "977296919",
       "field": "official_website",
       "verdict": "correct",
@@ -378,10 +370,18 @@
       "note": "Registry hjemmeside www.celsio.no (declared by the company) redirects to hafslund.no; site names Hafslund Celsio."
     },
     {
-      "org": "941834957",
+      "org": "916162812",
       "field": "official_website",
       "verdict": "correct",
       "why": "no org number in raw HTML",
+      "value": "\"https://www.molaanlegg.com/\"",
+      "note": "Homepage title and JSON-LD LocalBusiness name 'MOLA Anleggsservice', address 'Havnegata 19, 8514 Narvik' = registered business address of MOLA ANLEGGSSERVICE AS (916162812). New in v2 (name-derived domain + registry address gate)."
+    },
+    {
+      "org": "941834957",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "registry phone re-found on site (check legal name)",
       "value": "\"https://www.vestnes-fjordhotell.no/\"",
       "note": "Homepage prints 'Vestnes Fjordhotell AS' and registry phone 71 18 89 99."
     },
@@ -426,5 +426,6 @@
       "note": "Registry hjemmeside www.deloitte.no (declared by the company) redirects to deloitte.com/no; Deloitte Advokatfirma is the Norwegian Deloitte law firm."
     }
   ],
-  "precision_including_manual_review": 1.0
+  "precision_including_manual_review": 1.0,
+  "unreviewed": 0
 }

@@ -1,0 +1,52 @@
+{
+  "v1_commit": "34ac4ec2dd8eecb5b2b167c92a35d66e159bc368",
+  "v2_code_commit": "8bb5c313df2f27a6741d21efce9f7b93556a8ef3",
+  "smoke_100": {
+    "v1": {
+      "web_presence_section_available": 10,
+      "official_website": 10,
+      "social_profile_companies": 3,
+      "social_profile_claims": 7,
+      "hiring_section_available": 0,
+      "job_posting_companies": 0,
+      "job_posting_claims": 0,
+      "careers_page_companies": 0,
+      "web_ambiguous": 5
+    },
+    "v2": {
+      "web_presence_section_available": 12,
+      "official_website": 12,
+      "social_profile_companies": 3,
+      "social_profile_claims": 7,
+      "hiring_section_available": 0,
+      "job_posting_companies": 0,
+      "job_posting_claims": 0,
+      "careers_page_companies": 0,
+      "web_ambiguous": 6
+    }
+  },
+  "dev_employers_40": {
+    "v1": {
+      "web_presence_section_available": 22,
+      "official_website": 21,
+      "social_profile_companies": 17,
+      "social_profile_claims": 37,
+      "hiring_section_available": 10,
+      "job_posting_companies": 1,
+      "job_posting_claims": 2,
+      "careers_page_companies": 10,
+      "web_ambiguous": 1
+    },
+    "v2": {
+      "web_presence_section_available": 25,
+      "official_website": 24,
+      "social_profile_companies": 19,
+      "social_profile_claims": 38,
+      "hiring_section_available": 10,
+      "job_posting_companies": 1,
+      "job_posting_claims": 2,
+      "careers_page_companies": 10,
+      "web_ambiguous": 1
+    }
+  }
+}

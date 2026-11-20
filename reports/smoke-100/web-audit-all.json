@@ -1,0 +1,40 @@
+{
+  "companies": 12,
+  "claims_checked": 19,
+  "correct": 18,
+  "wrong": 0,
+  "needs_review": 1,
+  "unverifiable_by_script": 0,
+  "precision_on_machine_checked": 1.0,
+  "by_field": {
+    "official_website": {
+      "correct": 11,
+      "needs_review": 1
+    },
+    "social_profile": {
+      "correct": 7
+    }
+  },
+  "wrong_rows": [],
+  "review_rows": [
+    {
+      "org": "982942942",
+      "field": "official_website",
+      "verdict": "needs_review",
+      "why": "registry phone re-found on site (check legal name)",
+      "value": "\"https://brandmaker.no/\""
+    }
+  ],
+  "manual_review": [
+    {
+      "org": "982942942",
+      "field": "official_website",
+      "verdict": "correct",
+      "why": "registry phone re-found on site (check legal name)",
+      "value": "\"https://brandmaker.no/\"",
+      "note": "Site footer prints 'Brandmaker AS | Rådhusgaten 2 | 5014 Bergen | 90 82 19 83', identical to the registered business address and registry mobile of BRANDMAKER AS (982942942). Re-checked 2026-11-21 for v2."
+    }
+  ],
+  "precision_including_manual_review": 1.0,
+  "unreviewed": 0
+}

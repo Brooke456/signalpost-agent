@@ -1,9 +1,9 @@
 {
-  "run_id": "dev2",
-  "agent_version": "1.0.0",
-  "started_at": "2026-11-20T17:38:23Z",
-  "completed_at": "2026-11-20T17:41:48Z",
-  "wall_clock_s": 206.0,
+  "run_id": "dev-employers-40-v2",
+  "agent_version": "2.0.0",
+  "started_at": "2026-11-20T19:19:51Z",
+  "completed_at": "2026-11-20T19:27:40Z",
+  "wall_clock_s": 469.2,
   "expected_count": 40,
   "emitted_envelopes": 40,
   "terminal_availability": {
@@ -17,7 +17,7 @@
       "states": {
         "available": 40
       },
-      "claims": 819
+      "claims": 821
     },
     "financials": {
       "available_companies": 40,
@@ -41,15 +41,14 @@
       "claims": 156
     },
     "web_presence": {
-      "available_companies": 22,
+      "available_companies": 25,
       "states": {
-        "not_available": 15,
-        "available": 22,
-        "failed": 1,
+        "not_available": 13,
+        "available": 25,
         "ambiguous": 1,
         "blocked": 1
       },
-      "claims": 150
+      "claims": 169
     },
     "hiring": {
       "available_companies": 10,
@@ -64,7 +63,7 @@
       "states": {
         "available": 40
       },
-      "claims": 401
+      "claims": 411
     }
   },
   "fields": {
@@ -117,8 +116,8 @@
       "companies": 40
     },
     "company_news": {
-      "claims": 50,
-      "companies": 7
+      "claims": 60,
+      "companies": 9
     },
     "current_assets": {
       "claims": 120,
@@ -261,8 +260,8 @@
       "companies": 40
     },
     "official_website": {
-      "claims": 21,
-      "companies": 21
+      "claims": 24,
+      "companies": 24
     },
     "operating_expenses": {
       "claims": 120,
@@ -297,8 +296,8 @@
       "companies": 40
     },
     "public_brand_name": {
-      "claims": 14,
-      "companies": 14
+      "claims": 16,
+      "companies": 16
     },
     "registered_activity": {
       "claims": 40,
@@ -365,8 +364,8 @@
       "companies": 40
     },
     "social_profile": {
-      "claims": 37,
-      "companies": 17
+      "claims": 38,
+      "companies": 19
     },
     "statutory_purpose": {
       "claims": 40,
@@ -393,24 +392,24 @@
       "companies": 40
     },
     "website_contact_email": {
-      "claims": 13,
-      "companies": 12
+      "claims": 16,
+      "companies": 15
     },
     "website_description": {
-      "claims": 16,
-      "companies": 16
+      "claims": 19,
+      "companies": 19
     },
     "website_domain": {
-      "claims": 21,
-      "companies": 21
+      "claims": 24,
+      "companies": 24
     },
     "website_language": {
-      "claims": 21,
-      "companies": 21
+      "claims": 24,
+      "companies": 24
     },
     "website_title": {
-      "claims": 21,
-      "companies": 21
+      "claims": 24,
+      "companies": 24
     },
     "wikidata_item": {
       "claims": 3,
@@ -418,41 +417,41 @@
     }
   },
   "operations": {
-    "requests": 656,
-    "bytes": 21486895,
+    "requests": 10688,
+    "bytes": 52360718,
     "requests_by_host_top": {
-      "pam-stilling-feed.nav.no": 231,
+      "pam-stilling-feed.nav.no": 10033,
       "data.brreg.no": 172,
       "arbeidsplassen.nav.no": 26,
+      "www.siemens.com": 14,
+      "nottero-bakeri.no": 12,
+      "www.hafslund.no": 10,
       "assanering.no": 10,
+      "www.gjermundsen.no": 9,
       "trigger-as.no": 9,
       "zephyr.no": 9,
-      "www.hafslund.no": 9,
-      "www.bwt.com": 9,
       "www.deloitte.com": 9,
+      "www.bwt.com": 9,
       "carlings.com": 8,
-      "www.obforum.com": 8,
-      "avco.no": 7,
-      "www.amestoaccounthouse.no": 7,
-      "www.lindbak.no": 7,
-      "nv-t.no": 7
+      "www.arcticphoto.no": 8,
+      "ecosol.no": 8
     },
-    "request_p50_ms": 820,
-    "request_p95_ms": 4931,
-    "company_p50_ms": 15360,
-    "company_p95_ms": 38201,
+    "request_p50_ms": 254,
+    "request_p95_ms": 784,
+    "company_p50_ms": 24011,
+    "company_p95_ms": 77400,
     "third_party_cost_usd": 0.0,
     "llm_used": false
   },
   "registry_snapshot": {
-    "path": "../data/enheter.csv.gz",
+    "path": "/workspace/work/signalpost/data/enheter.csv.gz",
     "sha256": "fb2a19135d9a36c2a3780137834f85253361146919e71524e796af35629dba0f",
     "rows_scanned": 1181715,
     "selected": 40,
     "source": "https://data.brreg.no/enhetsregisteret/api/enheter/lastned/csv"
   },
   "refresh": {
-    "snapshot": "/tmp/d2/state/runs/dev2/envelopes.jsonl",
+    "snapshot": "state-dev40/runs/dev-employers-40-v2/envelopes.jsonl",
     "companies_with_previous": 0,
     "changes": 0,
     "material_changes": 0
@@ -471,7 +470,12 @@
   },
   "nav_feed": {
     "pages": 228,
-    "active_ads_indexed": 9805,
-    "error": null
+    "active_ads_indexed": 9804,
+    "error": null,
+    "entries_total": 9804,
+    "entries_fetched": 9804,
+    "entries_from_cache": 0,
+    "employer_orgnrs": 6035,
+    "org_index_complete": true
   }
 }

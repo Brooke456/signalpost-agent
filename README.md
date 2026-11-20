@@ -40,12 +40,18 @@ from the public 411,160-company universe:
 * `envelopes.jsonl` — the 100 terminal envelopes
 * `run-report.json` — coverage per section and field, request counts, p50/p95 latency, validation
 * `precision-audit.json` — independent re-derivation of every claim for 35 random companies (see below)
+* `web-audit-all.json` — re-audit of every website and social claim in the run
 * `refresh-check.json` — idempotent re-run (second run against the first run's state)
 * `index.html` — the viewer for these 100 profiles (search, profile, compare two, expand any fact to its source)
 
 Browse the smoke-test viewer: https://raw.githack.com/Brooke456/signalpost-agent/main/reports/smoke-100/index.html
-(GitHub Pages copy: `docs/smoke-100/index.html`). The smoke test was run from a clean clone at commit `320773e`;
-later commits only add reports and documentation (no code change). See `EVAL.md` for the numbers.
+(GitHub Pages copy: `docs/smoke-100/index.html`). The v2 smoke test was run from a clean clone at commit `8bb5c31`;
+later commits only add reports and documentation (no code change). See `EVAL.md` for the numbers and the v1 → v2 comparison
+(`reports/v1-vs-v2.json`).
+
+**v2.0.0** raises website / social / hiring recall without loosening the identity gate: more name-derived and sub-unit
+website candidates (still published only on org number, or legal name + registry phone/address/e-mail), directory and
+chain-page guards, and an exact org-number index over every active NAV feed entry (main unit + sub-units).
 
 ## Viewer (UX)
 

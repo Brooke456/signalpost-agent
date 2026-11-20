@@ -1,10 +1,12 @@
 {
-  "check": "idempotent refresh: second run (smoke-100-r2) of the same 100 organisation numbers against the state written by smoke-100-r1, from a clean clone at the submitted commit",
-  "companies": 100,
-  "companies_with_previous_snapshot": 100,
-  "changes_detected": 0,
-  "companies_with_identical_claim_ids": 100,
-  "first_run_snapshot_preserved": true,
-  "changes": [],
-  "note": "Typed change detection (new_role/ended_role, new_location, new_job/closed_job, new_filing, changed_description) and carry-forward on source failure are covered by tests/test_core.py."
+ "check": "refresh: second run (smoke-100-v2-r2) of the same 100 organisation numbers against the state written by smoke-100-v2, from a clean clone at the submitted commit",
+ "companies": 100,
+ "companies_with_previous_snapshot": 100,
+ "changes_detected": 0,
+ "change_types": {},
+ "companies_with_identical_claim_ids": 100,
+ "claim_id_differences": [],
+ "changes": [],
+ "first_run_snapshot_preserved": true,
+ "note": "Warm NAV cache on the second run: 0 feed entries re-read (9,804 from cache), 1,759 requests, 250 s. Typed change detection is covered by tests/test_core.py."
 }

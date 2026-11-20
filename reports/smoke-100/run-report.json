@@ -1,9 +1,9 @@
 {
-  "run_id": "smoke-100-r1",
-  "agent_version": "1.0.0",
-  "started_at": "2026-11-20T17:49:13Z",
-  "completed_at": "2026-11-20T17:52:50Z",
-  "wall_clock_s": 217.7,
+  "run_id": "smoke-100-v2",
+  "agent_version": "2.0.0",
+  "started_at": "2026-11-20T19:11:03Z",
+  "completed_at": "2026-11-20T19:18:36Z",
+  "wall_clock_s": 455.6,
   "expected_count": 100,
   "emitted_envelopes": 100,
   "terminal_availability": {
@@ -42,14 +42,14 @@
       "claims": 77
     },
     "web_presence": {
-      "available_companies": 10,
+      "available_companies": 12,
       "states": {
-        "available": 10,
-        "not_available": 82,
-        "ambiguous": 5,
-        "failed": 3
+        "available": 12,
+        "not_available": 81,
+        "ambiguous": 6,
+        "failed": 1
       },
-      "claims": 54
+      "claims": 59
     },
     "hiring": {
       "available_companies": 0,
@@ -63,7 +63,7 @@
       "states": {
         "available": 100
       },
-      "claims": 201
+      "claims": 209
     }
   },
   "fields": {
@@ -112,8 +112,8 @@
       "companies": 64
     },
     "company_news": {
-      "claims": 24,
-      "companies": 3
+      "claims": 32,
+      "companies": 4
     },
     "current_assets": {
       "claims": 273,
@@ -252,8 +252,8 @@
       "companies": 94
     },
     "official_website": {
-      "claims": 10,
-      "companies": 10
+      "claims": 12,
+      "companies": 12
     },
     "operating_expenses": {
       "claims": 271,
@@ -388,16 +388,16 @@
       "companies": 7
     },
     "website_domain": {
-      "claims": 10,
-      "companies": 10
+      "claims": 11,
+      "companies": 11
     },
     "website_language": {
-      "claims": 8,
-      "companies": 8
+      "claims": 9,
+      "companies": 9
     },
     "website_title": {
-      "claims": 10,
-      "companies": 10
+      "claims": 11,
+      "companies": 11
     },
     "wikidata_item": {
       "claims": 1,
@@ -405,29 +405,29 @@
     }
   },
   "operations": {
-    "requests": 1253,
-    "bytes": 24055057,
+    "requests": 11567,
+    "bytes": 60152142,
     "requests_by_host_top": {
+      "pam-stilling-feed.nav.no": 10033,
       "data.brreg.no": 411,
-      "pam-stilling-feed.nav.no": 229,
       "www.maritim-consultants.no": 12,
+      "navn.no": 12,
+      "www.facebook.com": 11,
       "arbeidsplassen.nav.no": 10,
+      "sago.com": 9,
+      "www.richardbeaumont.no": 8,
+      "www.rbcbluebay.com": 8,
+      "www.insbo.no": 8,
       "www.studiox.no": 8,
-      "www.rbproffpartner.no": 8,
-      "svorka.no": 7,
-      "atg.no": 7,
-      "www.facebook.com": 7,
-      "sago.com": 7,
-      "skunkworks.com": 7,
-      "www.differgroup.com": 7,
-      "devoldsregnskap.no": 7,
-      "a-seafood.com": 7,
-      "www.webhuset.no": 7
+      "www.kjerringholmen.com": 8,
+      "www.xlent.se": 8,
+      "laringsverkstedet.no": 8,
+      "www.rbproffpartner.no": 8
     },
-    "request_p50_ms": 804,
-    "request_p95_ms": 4907,
-    "company_p50_ms": 11491,
-    "company_p95_ms": 49226,
+    "request_p50_ms": 272,
+    "request_p95_ms": 1045,
+    "company_p50_ms": 16133,
+    "company_p95_ms": 76267,
     "third_party_cost_usd": 0.0,
     "llm_used": false
   },
@@ -439,7 +439,7 @@
     "source": "https://data.brreg.no/enhetsregisteret/api/enheter/lastned/csv"
   },
   "refresh": {
-    "snapshot": "/tmp/clean-state/runs/smoke-100-r1/envelopes.jsonl",
+    "snapshot": "state/runs/smoke-100-v2/envelopes.jsonl",
     "companies_with_previous": 0,
     "changes": 0,
     "material_changes": 0
@@ -458,7 +458,12 @@
   },
   "nav_feed": {
     "pages": 228,
-    "active_ads_indexed": 9805,
-    "error": null
+    "active_ads_indexed": 9804,
+    "error": null,
+    "entries_total": 9804,
+    "entries_fetched": 9804,
+    "entries_from_cache": 0,
+    "employer_orgnrs": 6035,
+    "org_index_complete": true
   }
 }
