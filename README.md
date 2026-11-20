@@ -43,7 +43,9 @@ from the public 411,160-company universe:
 * `refresh-check.json` — idempotent re-run (second run against the first run's state)
 * `index.html` — the viewer for these 100 profiles (search, profile, compare two, expand any fact to its source)
 
-See `EVAL.md` for the numbers.
+Browse the smoke-test viewer: https://raw.githack.com/Brooke456/signalpost-agent/main/reports/smoke-100/index.html
+(GitHub Pages copy: `docs/smoke-100/index.html`). The smoke test was run from a clean clone at commit `320773e`;
+later commits only add reports and documentation (no code change). See `EVAL.md` for the numbers.
 
 ## Viewer (UX)
 
